@@ -1,0 +1,15 @@
+# LiveKit Agent Framework
+livekit-agents>=1.0.0
+livekit-plugins-openai>=0.8.0  # Used for Groq (OpenAI-compatible API)
+livekit-plugins-deepgram>=0.1.3  # STT/TTS (free tier)
+livekit-plugins-silero>=0.6.0  # Voice Activity Detection
+
+# Database
+firebase-admin>=6.5.0
+
+# Web UI
+Flask>=3.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+requests>=2.31.0

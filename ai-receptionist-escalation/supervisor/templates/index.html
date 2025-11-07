@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervisor Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 AI Receptionist Supervisor Dashboard</h1>
+            <nav>
+                <a href="/" class="active">Dashboard</a>
+                <a href="/pending">Pending Requests</a>
+                <a href="/history">History</a>
+                <a href="/knowledge-base">Knowledge Base</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="stats-grid">
+                <div class="stat-card pending">
+                    <h2>{{ stats.pending }}</h2>
+                    <p>Pending Requests</p>
+                    <a href="/pending" class="btn">View All</a>
+                </div>
+
+                <div class="stat-card resolved">
+                    <h2>{{ stats.resolved }}</h2>
+                    <p>Resolved</p>
+                </div>
+
+                <div class="stat-card unresolved">
+                    <h2>{{ stats.unresolved }}</h2>
+                    <p>Timed Out</p>
+                </div>
+
+                <div class="stat-card kb">
+                    <h2>{{ stats.total_kb_entries }}</h2>
+                    <p>KB Entries</p>
+                    <a href="/knowledge-base" class="btn">View KB</a>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <button onclick="timeoutOldRequests()" class="btn btn-secondary">
+                    ⏰ Check for Timeouts
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function timeoutOldRequests() {
+            const response = await fetch('/api/timeout-old-requests', { method: 'POST' });
+            if (response.ok) {
+                alert('Timeout check completed');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

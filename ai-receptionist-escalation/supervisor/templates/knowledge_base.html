@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Base</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Knowledge Base</h1>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/pending">Pending Requests</a>
+                <a href="/history">History</a>
+                <a href="/knowledge-base" class="active">Knowledge Base</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="kb-stats">
+                <p>Total Learned Answers: <strong>{{ kb_entries|length }}</strong></p>
+            </div>
+
+            {% if kb_entries %}
+                <div class="kb-list">
+                    {% for kb_id, kb_data in kb_entries %}
+                    <div class="kb-card">
+                        <div class="kb-header">
+                            <span class="kb-id">KB-{{ kb_id[:6] }}</span>
+                            <span class="kb-time">{{ kb_data.created_at }}</span>
+                        </div>
+                        <div class="kb-body">
+                            <p class="kb-question"><strong>Q:</strong> {{ kb_data.question }}</p>
+                            <p class="kb-answer"><strong>A:</strong> {{ kb_data.answer }}</p>
+                            {% if kb_data.learned_from_request_id %}
+                            <p class="kb-source">Learned from request: {{ kb_data.learned_from_request_id[:8] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>📖 No learned answers yet. Start answering help requests to build the knowledge base!</p>
+                </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Requests</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Pending Help Requests</h1>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/pending" class="active">Pending Requests</a>
+                <a href="/history">History</a>
+                <a href="/knowledge-base">Knowledge Base</a>
+            </nav>
+        </header>
+
+        <main>
+            {% if requests %}
+                <div class="requests-list">
+                    {% for request_id, req_data in requests %}
+                    <div class="request-card">
+                        <div class="request-header">
+                            <span class="request-id">ID: {{ request_id[:8] }}</span>
+                            <span class="request-time">{{ req_data.created_at }}</span>
+                        </div>
+                        <div class="request-body">
+                            <p class="question"><strong>Question:</strong> {{ req_data.question }}</p>
+                            <p class="caller"><strong>Caller:</strong> {{ req_data.caller_phone }}</p>
+                        </div>
+                        <div class="request-actions">
+                            <form action="/respond/{{ request_id }}" method="POST">
+                                <textarea name="answer" placeholder="Type your answer here..." required></textarea>
+                                <button type="submit" class="btn btn-primary">✅ Respond</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>🎉 No pending requests!</p>
+                </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Request History</h1>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/pending">Pending Requests</a>
+                <a href="/history" class="active">History</a>
+                <a href="/knowledge-base">Knowledge Base</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="history-section">
+                <h2>✅ Resolved Requests ({{ resolved|length }})</h2>
+                {% if resolved %}
+                    <div class="requests-list">
+                        {% for request_id, req_data in resolved %}
+                        <div class="request-card resolved">
+                            <div class="request-header">
+                                <span class="request-id">ID: {{ request_id[:8] }}</span>
+                                <span class="request-time">Resolved: {{ req_data.resolved_at }}</span>
+                            </div>
+                            <div class="request-body">
+                                <p class="question"><strong>Q:</strong> {{ req_data.question }}</p>
+                                <p class="answer"><strong>A:</strong> {{ req_data.supervisor_answer }}</p>
+                                <p class="caller"><strong>Caller:</strong> {{ req_data.caller_phone }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-state-small">No resolved requests yet</p>
+                {% endif %}
+            </section>
+
+            <section class="history-section">
+                <h2>⏰ Unresolved (Timed Out) ({{ unresolved|length }})</h2>
+                {% if unresolved %}
+                    <div class="requests-list">
+                        {% for request_id, req_data in unresolved %}
+                        <div class="request-card unresolved">
+                            <div class="request-header">
+                                <span class="request-id">ID: {{ request_id[:8] }}</span>
+                                <span class="request-time">Timed out: {{ req_data.resolved_at }}</span>
+                            </div>
+                            <div class="request-body">
+                                <p class="question"><strong>Q:</strong> {{ req_data.question }}</p>
+                                <p class="caller"><strong>Caller:</strong> {{ req_data.caller_phone }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-state-small">No timed out requests</p>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>
